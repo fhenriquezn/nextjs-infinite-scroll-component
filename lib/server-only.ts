@@ -7,7 +7,6 @@ const getBaseUrl = (endpoint: string) => {
 const getOptions = async (method: string) => {
   return {
     method: method,
-    //add more headers here
   };
 };
 

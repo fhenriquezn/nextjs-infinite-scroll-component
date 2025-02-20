@@ -2,14 +2,14 @@ export interface PagedResult<T> {
   items: T[];
   total: number;
   skip: number;
-  limit: boolean;
+  limit: number;
 }
 
-export interface SearchDummyProducts extends PagedResult {
-  products: DummyProducts[];
+export interface SearchDummyProducts extends PagedResult<DummyProduct> {
+  products: DummyProduct[];
 }
 
-export interface DummyProducts extends PagedResult {
+export interface DummyProduct {
   id: number;
   title: string;
   description: string;
@@ -53,4 +53,9 @@ export interface Meta {
   updatedAt: string;
   barcode: string;
   qrCode: string;
+}
+
+export type InfiniteScrollParams = {
+  page:number = 1;
+  batchSize: number = 10;
 }

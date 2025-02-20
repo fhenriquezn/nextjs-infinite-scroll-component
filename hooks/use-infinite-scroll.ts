@@ -30,11 +30,12 @@ export function useInfiniteScroll<
         page: nextPage,
       });
       setItems((prev) => [...prev, ...newItems.items]);
-      const totalPages = Math.ceil(newItems.total / params.batchSize!);
-      const hasMore = nextPage < totalPages;
-      setHasMore(hasMore);
-      setPage(nextPage);
-      setTotalPages(newItems.total);
+      const calculatedTotalPages = Math.ceil(
+        newItems.total / (params.batchSize || 1)
+      );
+      setPage(() => nextPage);
+      setHasMore(() => nextPage < calculatedTotalPages);
+      setTotalPages(() => calculatedTotalPages);
     } catch (error) {
       console.error("Error loading more items:", error);
     } finally {
@@ -45,7 +46,6 @@ export function useInfiniteScroll<
   useEffect(() => {
     if (inView) loadMoreItems();
   }, [inView]);
-
   return {
     items,
     isLoading,
