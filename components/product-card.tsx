@@ -23,6 +23,8 @@ export function ProductCard({ entry }: ProductCardProps) {
             <Image 
               src={entry.thumbnail}
               alt={entry.title}
+              width={500}
+              height={500}
               className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
             />
           </div>

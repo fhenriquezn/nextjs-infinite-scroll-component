@@ -30,6 +30,8 @@ export function SaleProductCard({ product }: SaleProductCardProps) {
         <Image
           src={product.thumbnail}
           alt={product.title}
+          width={500}
+          height={500}
           className="object-cover w-full h-full hover:scale-105 transition-transform duration-300"
         />
         <Badge className="absolute top-2 left-2 bg-red-500">
