@@ -6,23 +6,14 @@ import { Button } from "@/components/ui/button";
 import { ShoppingCart, Package } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
+import { calculateDiscountedPrice } from "@/lib/utils";
 
 interface SaleProductCardProps {
   product: DummyProduct;
 }
 
-function calculateDiscountedPrice(
-  price: number,
-  discountPercentage: number
-): number {
-  return price - (price * discountPercentage) / 100;
-}
-
 export function SaleProductCard({ product }: SaleProductCardProps) {
-  const discountedPrice = calculateDiscountedPrice(
-    product.price,
-    product.discountPercentage
-  );
+  const discountedPrice = calculateDiscountedPrice(product);
 
   return (
     <Card className="flex flex-col h-full">

@@ -1,6 +1,16 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
-import { Percent, Star } from 'lucide-react'
-import React from 'react'
+import { getTopDiscountedProducts, getTopRatedProducts } from "@/actions/products";
+import { TopRatedItem } from "@/components/top-rated-product";
+import { TopSaleItem } from "@/components/top-sale-product";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import InfiniteScroll from "@/components/ui/infinite-scroll";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Percent, Star } from "lucide-react";
+import React from "react";
 
 function Sidebar() {
   return (
@@ -15,15 +25,15 @@ function Sidebar() {
             </div>
           </AccordionTrigger>
           <AccordionContent className="px-4 pt-2 pb-4">
-            <div className="space-y-3">
-              {/* {topRatedProducts.map((product, index) => (
-                <TopRatedItem 
-                  key={product.id} 
-                  product={product}
-                  isLast={index === topRatedProducts.length - 1}
+            <ScrollArea className="h-[300px] pr-4">
+              <div className="space-y-3">
+                <InfiniteScroll
+                  loadMore={getTopRatedProducts}
+                  searchParams={{ page: 1, batchSize: 5 }}
+                  ItemComponent={TopRatedItem}
                 />
-              ))} */}
-            </div>
+              </div>
+            </ScrollArea>
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="discounted" className="border rounded-lg bg-card">
@@ -34,20 +44,20 @@ function Sidebar() {
             </div>
           </AccordionTrigger>
           <AccordionContent className="px-4 pt-2 pb-4">
-            <div className="space-y-3">
-              {/* {discountedProducts.map((product, index) => (
-                <SaleItem 
-                  key={product.id} 
-                  product={product}
-                  isLast={index === discountedProducts.length - 1}
+            <ScrollArea className="h-[300px] pr-4">
+              <div className="space-y-3">
+                <InfiniteScroll
+                  loadMore={getTopDiscountedProducts}
+                  searchParams={{ page: 1, batchSize: 5 }}
+                  ItemComponent={TopSaleItem}
                 />
-              ))} */}
-            </div>
+              </div>
+            </ScrollArea>
           </AccordionContent>
         </AccordionItem>
       </Accordion>
     </div>
-  )
+  );
 }
 
-export default Sidebar
+export default Sidebar;

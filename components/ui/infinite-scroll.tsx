@@ -31,7 +31,6 @@ const InfiniteScroll = <T, P extends { page?: number; batchSize?: number }>({
     loadMore,
     searchParams
   );
-
   return (
     <>
       {items.map((entry, index) => (

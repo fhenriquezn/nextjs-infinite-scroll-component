@@ -16,7 +16,7 @@ export function ProductCard({ entry }: ProductCardProps) {
   return (
     <>
       {entry.discountPercentage > 5 ? (
-        <SaleProductCard key={entry.id} product={entry} />
+        <SaleProductCard product={entry} />
       ) : (
         <Card className="flex flex-col h-full">
           <div className="relative aspect-square">

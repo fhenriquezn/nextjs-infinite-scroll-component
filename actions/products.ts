@@ -11,8 +11,23 @@ import {
 export const getProducts = async (params: InfiniteScrollParams) => {
   const skip = (params.page - 2) * params.batchSize;
   const url = `products?limit=${params.batchSize}&skip=${skip}`;
-  const result = await GET<SearchDummyProducts>(url);
+  return await CallAPI(url);
+};
 
+export const getTopRatedProducts = async (params: InfiniteScrollParams) => {
+  const skip = (params.page - 2) * params.batchSize;
+  const url = `products?limit=${params.batchSize}&skip=${skip}&sortBy=rating&order=desc`;
+  return await CallAPI(url);
+};
+
+export const getTopDiscountedProducts = async (params: InfiniteScrollParams) => {
+  const skip = (params.page - 2) * params.batchSize;
+  const url = `products?limit=${params.batchSize}&skip=${skip}&sortBy=discountPercentage&order=desc`;
+  return await CallAPI(url);
+};
+
+const CallAPI = async (url: string) => {
+  const result = await GET<SearchDummyProducts>(url);
   var pagedResult: PagedResult<DummyProduct> = {
     items: [],
     total: 0,
@@ -30,4 +45,4 @@ export const getProducts = async (params: InfiniteScrollParams) => {
   }
 
   return pagedResult;
-};
+}
