@@ -10,7 +10,6 @@ import {
 } from "@/types";
 
 export const getProducts = async (params: SearchProductsParams) => {
-  console.log("getProducts", params);
   const url = `products/search?${params.q ? "q=" + params.q : ""}`;
   return await CallAPI(params, url);
 };
@@ -30,7 +29,6 @@ export const getTopDiscountedProducts = async (
 const CallAPI = async (params: SearchProductsParams, url: string) => {
   const skip = (params.page! - 2) * params.batchSize!;//Customizations to the original code, to match dummyjson API pagination
   url = `${url}&skip=${skip}&limit=${params.batchSize}`;
-  console.log(url);
   const result = await GET<SearchDummyProducts>(url);
   var pagedResult: PagedResult<DummyProduct> = {
     items: [],

@@ -53,7 +53,6 @@ const InfiniteScroll = <T, P extends { page?: number; batchSize?: number }>({
     if (isRefreshable) {
       const prevParams = prevParamsRef.current;
       const paramsChanged = haveParamsChanged(prevParams, searchParams);
-      console.log("paramsChanged", prevParams, searchParams, paramsChanged);
       if (paramsChanged) {
         refresh(searchParams);
         prevParamsRef.current = searchParams;
