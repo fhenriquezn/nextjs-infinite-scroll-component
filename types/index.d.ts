@@ -56,6 +56,18 @@ export interface Meta {
 }
 
 export type InfiniteScrollParams = {
-  page:number = 1;
-  batchSize: number = 10;
+  page?: number = 1;
+  batchSize?: number = 15;
+  isRefreshable?: boolean = false;
+};
+
+export interface SearchProductsParams extends InfiniteScrollParams {
+  q?: string;
 }
+
+export type Params = Promise<{
+  [key: string]: string | string[] | undefined | number;
+}>;
+export type SearchParams = Promise<{
+  [key: string]: string | string[] | undefined;
+}>;

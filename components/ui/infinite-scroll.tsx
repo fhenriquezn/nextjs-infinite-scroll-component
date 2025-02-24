@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { PagedResult } from "@/types";
 import React from "react";
@@ -10,6 +10,7 @@ interface InfiniteScrollProps<
   P extends { page?: number; batchSize?: number }
 > {
   loadMore: (params: P) => Promise<PagedResult<T>>;
+  isRefreshable?: boolean;
   searchParams: P;
   ItemComponent: React.ComponentType<{ entry: T }>;
 }
@@ -19,6 +20,7 @@ const DEFAULT_PAGE = 0;
 
 const InfiniteScroll = <T, P extends { page?: number; batchSize?: number }>({
   loadMore,
+  isRefreshable = false,
   searchParams,
   ItemComponent,
 }: InfiniteScrollProps<T, P>) => {
@@ -27,10 +29,37 @@ const InfiniteScroll = <T, P extends { page?: number; batchSize?: number }>({
     page: searchParams.page || DEFAULT_PAGE,
     batchSize: searchParams.batchSize || DEFAULT_PAGE_SIZE,
   };
-  const { items, isLoading, hasMore, loadingRef } = useInfiniteScroll(
+  const { items, isLoading, hasMore, loadingRef, refresh } = useInfiniteScroll(
     loadMore,
     searchParams
   );
+
+  const prevParamsRef = React.useRef(searchParams);
+
+  const haveParamsChanged = React.useCallback(
+    (prevParams: P, newParams: P): boolean => {
+      const prevKeys = Object.keys(prevParams).filter((key) => key !== "page");
+      const newKeys = Object.keys(newParams).filter((key) => key !== "page");
+
+      if (prevKeys.length !== newKeys.length) return true;
+      return prevKeys.some(
+        (key) => prevParams[key as keyof P] !== newParams[key as keyof P]
+      );
+    },
+    []
+  );
+
+  React.useEffect(() => {
+    if (isRefreshable) {
+      const prevParams = prevParamsRef.current;
+      const paramsChanged = haveParamsChanged(prevParams, searchParams);
+      if (paramsChanged) {
+        refresh(searchParams);
+        prevParamsRef.current = searchParams;
+      }
+    }
+  }, [searchParams, isRefreshable, refresh, haveParamsChanged]);
+
   return (
     <>
       {items.map((entry, index) => (

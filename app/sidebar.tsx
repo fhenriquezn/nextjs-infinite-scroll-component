@@ -14,8 +14,8 @@ import React from "react";
 
 function Sidebar() {
   return (
-    <div className="space-y-6">
-      <h2 className="text-lg font-semibold">Quick Views</h2>
+    <div className="sticky top-24">
+      <h2 className="text-lg font-semibold mb-4">Quick Views</h2>
       <Accordion type="multiple" className="w-full space-y-4">
         <AccordionItem value="top-rated" className="border rounded-lg bg-card">
           <AccordionTrigger className="px-4 hover:bg-muted/50 rounded-t-lg">

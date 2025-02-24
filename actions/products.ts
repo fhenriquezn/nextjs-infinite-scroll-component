@@ -6,27 +6,29 @@ import {
   InfiniteScrollParams,
   DummyProduct,
   PagedResult,
+  SearchProductsParams,
 } from "@/types";
 
-export const getProducts = async (params: InfiniteScrollParams) => {
-  const skip = (params.page - 2) * params.batchSize;
-  const url = `products?limit=${params.batchSize}&skip=${skip}`;
-  return await CallAPI(url);
+export const getProducts = async (params: SearchProductsParams) => {
+  const url = `products/search?${params.q ? "q=" + params.q : ""}`;
+  return await CallAPI(params, url);
 };
 
 export const getTopRatedProducts = async (params: InfiniteScrollParams) => {
-  const skip = (params.page - 2) * params.batchSize;
-  const url = `products?limit=${params.batchSize}&skip=${skip}&sortBy=rating&order=desc`;
-  return await CallAPI(url);
+  const url = `products?sortBy=rating&order=desc`;
+  return await CallAPI(params, url);
 };
 
-export const getTopDiscountedProducts = async (params: InfiniteScrollParams) => {
-  const skip = (params.page - 2) * params.batchSize;
-  const url = `products?limit=${params.batchSize}&skip=${skip}&sortBy=discountPercentage&order=desc`;
-  return await CallAPI(url);
+export const getTopDiscountedProducts = async (
+  params: InfiniteScrollParams
+) => {
+  const url = `products?sortBy=discountPercentage&order=desc`;
+  return await CallAPI(params, url);
 };
 
-const CallAPI = async (url: string) => {
+const CallAPI = async (params: SearchProductsParams, url: string) => {
+  const skip = (params.page! - 1) * params.batchSize!;
+  url = `${url}&skip=${skip}&limit=${params.batchSize}`;
   const result = await GET<SearchDummyProducts>(url);
   var pagedResult: PagedResult<DummyProduct> = {
     items: [],
@@ -43,6 +45,5 @@ const CallAPI = async (url: string) => {
       limit: result.limit,
     };
   }
-
   return pagedResult;
-}
+};

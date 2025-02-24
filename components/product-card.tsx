@@ -20,7 +20,8 @@ export function ProductCard({ entry }: ProductCardProps) {
       ) : (
         <Card className="flex flex-col h-full">
           <div className="relative aspect-square">
-            <Image 
+            <Image
+              priority
               src={entry.thumbnail}
               alt={entry.title}
               width={500}

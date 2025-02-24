@@ -43,6 +43,15 @@ export function useInfiniteScroll<
     }
   };
 
+  const refresh = async (newParams: Omit<P, "page">) => {
+    setItems(() => []);
+    setParams(() => ({ ...newParams, page: 1 } as P));
+    setTotalPages(() => -1);
+    setPage(() => 1);
+    setIsLoading(() => true);
+    setHasMore(() => true);
+  };
+
   useEffect(() => {
     if (inView) loadMoreItems();
   }, [inView]);
@@ -52,5 +61,6 @@ export function useInfiniteScroll<
     hasMore,
     loadingRef: ref,
     page,
+    refresh,
   };
 }
