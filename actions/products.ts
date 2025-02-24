@@ -10,6 +10,7 @@ import {
 } from "@/types";
 
 export const getProducts = async (params: SearchProductsParams) => {
+  console.log("getProducts", params);
   const url = `products/search?${params.q ? "q=" + params.q : ""}`;
   return await CallAPI(params, url);
 };

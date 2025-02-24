@@ -11,17 +11,17 @@ interface InfiniteScrollProps<
 > {
   loadMore: (params: P) => Promise<PagedResult<T>>;
   isRefreshable?: boolean;
-  searchParams: P;
+  searchParams?: P;
   ItemComponent: React.ComponentType<{ entry: T }>;
 }
 
 const DEFAULT_PAGE_SIZE = 15;
-const DEFAULT_PAGE = 0;
+const DEFAULT_PAGE = 1;
 
 const InfiniteScroll = <T, P extends { page?: number; batchSize?: number }>({
   loadMore,
   isRefreshable = false,
-  searchParams,
+  searchParams = {} as P,
   ItemComponent,
 }: InfiniteScrollProps<T, P>) => {
   searchParams = {
@@ -53,6 +53,7 @@ const InfiniteScroll = <T, P extends { page?: number; batchSize?: number }>({
     if (isRefreshable) {
       const prevParams = prevParamsRef.current;
       const paramsChanged = haveParamsChanged(prevParams, searchParams);
+      console.log("paramsChanged", prevParams, searchParams, paramsChanged);
       if (paramsChanged) {
         refresh(searchParams);
         prevParamsRef.current = searchParams;
