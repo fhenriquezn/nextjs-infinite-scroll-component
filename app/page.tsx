@@ -4,6 +4,7 @@ import Products from "@/components/products";
 import { Suspense } from "react";
 import { SearchParams } from "@/types";
 import SearchForm from "@/components/search-form";
+import { Cart } from "@/components/ui/cart";
 
 export default async function Home(props: { searchParams: SearchParams }) {
   const searchParams = await props.searchParams;
@@ -18,6 +19,7 @@ export default async function Home(props: { searchParams: SearchParams }) {
               <h1 className="text-xl font-semibold">Store</h1>
             </div>
             <SearchForm q={q} />
+            <Cart />
           </div>
         </div>
       </header>

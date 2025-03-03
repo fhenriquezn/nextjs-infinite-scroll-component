@@ -1,19 +1,38 @@
 "use client";
 
 import { DummyProduct } from "@/types";
+import { product } from "@prisma/client";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Package } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import Image from "next/image";
 import { calculateDiscountedPrice } from "@/lib/utils";
+import { useCart } from "@/hooks/use-cart";
+import { useActionState } from "react";
+import { addItem } from "@/actions/cart";
 
 interface SaleProductCardProps {
   product: DummyProduct;
 }
 
 export function SaleProductCard({ product }: SaleProductCardProps) {
+  const { addCartItem } = useCart();
   const discountedPrice = calculateDiscountedPrice(product);
+  const prod = {
+    ...product,
+    name: product.title,
+    originalPrice: product.price,
+    price: discountedPrice,
+    discount: product.discountPercentage,
+    image: product.thumbnail,
+    saleEndsAt: null,
+  } as product;
+  const [, formAction] = useActionState(addItem, null);
+    const addItemAction = formAction.bind(null, {
+      product: prod,
+      cartId: 1
+    });
 
   return (
     <Card className="flex flex-col h-full">
@@ -64,14 +83,20 @@ export function SaleProductCard({ product }: SaleProductCardProps) {
       </CardContent>
 
       <CardFooter className="p-4 pt-0">
-        <Button
-          size="sm"
-          className="w-full hover:scale-[1.02] transition-transform"
-          onClick={() => alert("Added to cart!")}
+        <form
+          action={async () => {
+            addCartItem(prod);
+            addItemAction();
+          }}
         >
-          <ShoppingCart className="w-4 h-4 mr-2" />
-          Add to Cart
-        </Button>
+          <Button
+            size="sm"
+            className="w-full hover:scale-[1.02] transition-transform"
+          >
+            <ShoppingCart className="w-4 h-4 mr-2" />
+            Add to Cart
+          </Button>
+        </form>
       </CardFooter>
     </Card>
   );

@@ -6,11 +6,15 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const getFutureDate = (minDays: number = 1, maxDays: number = 30) => {
+export const getFutureDateString = (minDays: number = 1, maxDays: number = 30) : string => {
+  return getFutureDate(minDays, maxDays).toISOString();
+};
+
+export const getFutureDate = (minDays: number = 1, maxDays: number = 30) : Date => {
   const randomDays = Math.floor(Math.random() * (maxDays - minDays + 1)) + minDays;
   const date = new Date();
   date.setDate(date.getDate() + randomDays);
-  return date.toISOString();
+  return date;
 };
 
 export function calculateDiscountedPrice(product: DummyProduct): number {

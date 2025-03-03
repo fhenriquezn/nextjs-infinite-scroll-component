@@ -71,3 +71,15 @@ export type Params = Promise<{
 export type SearchParams = Promise<{
   [key: string]: string | string[] | undefined;
 }>;
+
+export type UpdateType = "plus" | "minus" | "delete";
+
+export type CartAction =
+  | {
+      type: "UPDATE_ITEM";
+      payload: { merchandiseId: number; updateType: UpdateType };
+    }
+  | {
+      type: "ADD_ITEM";
+      payload: { product: product };
+    };

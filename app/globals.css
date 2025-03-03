@@ -80,3 +80,9 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Fix for scroll area viewport */
+[data-radix-scroll-area-viewport] > div {
+  min-width: 100%;
+  display: block !important; /* Override display: table */
+}

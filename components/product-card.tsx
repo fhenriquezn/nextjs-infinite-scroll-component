@@ -7,12 +7,31 @@ import { Badge } from "@/components/ui/badge";
 import { DummyProduct } from "@/types";
 import { SaleProductCard } from "./sale-product-card";
 import Image from "next/image";
+import { useCart } from "@/hooks/use-cart";
+import { product } from "@prisma/client";
+import { useActionState } from "react";
+import { addItem } from "@/actions/cart";
 
 interface ProductCardProps {
   entry: DummyProduct;
 }
 
 export function ProductCard({ entry }: ProductCardProps) {
+  const { addCartItem } = useCart();
+  const [, formAction] = useActionState(addItem, null);
+  
+  const product = {
+    ...entry,
+    name: entry.title,
+    originalPrice: entry.price,
+    discount: entry.discountPercentage,
+    image: entry.thumbnail,
+    saleEndsAt: null
+  } as product;
+  const addItemAction = formAction.bind(null, {
+    product: product,
+    cartId: 1
+  });
   return (
     <>
       {entry.discountPercentage > 5 ? (
@@ -54,14 +73,18 @@ export function ProductCard({ entry }: ProductCardProps) {
           </CardContent>
 
           <CardFooter className="p-4 pt-0">
-            <Button
-              size="sm"
-              className="w-full hover:scale-[1.02] transition-transform"
-              onClick={() => alert("Added to cart!")}
-            >
-              <ShoppingCart className="w-4 h-4 mr-2" />
-              Add to Cart
-            </Button>
+            <form action={async () => {
+              addCartItem(product);
+              addItemAction();
+            }}>
+              <Button
+                size="sm"
+                className="w-full hover:scale-[1.02] transition-transform"
+              >
+                <ShoppingCart className="w-4 h-4 mr-2" />
+                Add to Wishlist
+              </Button>
+            </form>
           </CardFooter>
         </Card>
       )}

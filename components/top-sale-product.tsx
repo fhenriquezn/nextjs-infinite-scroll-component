@@ -3,7 +3,7 @@
 import { Separator } from "@/components/ui/separator";
 import { DummyProduct } from "@/types";
 import { CountdownTimer } from "./ui/countdown-timer";
-import { calculateDiscountedPrice, getFutureDate } from "@/lib/utils";
+import { calculateDiscountedPrice, getFutureDateString } from "@/lib/utils";
 import Image from "next/image";
 
 interface SaleItemProps {
@@ -36,7 +36,7 @@ export function TopSaleItem({ entry }: SaleItemProps) {
               </div>
             </div>
             <div className="flex items-center gap-1 mt-1 text-xs text-muted-foreground">
-              <CountdownTimer endDate={getFutureDate()} />
+              <CountdownTimer endDate={getFutureDateString()} />
             </div>
           </div>
           <div className="text-right">
